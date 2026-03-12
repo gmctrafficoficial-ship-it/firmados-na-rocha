@@ -240,7 +240,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
 <div class="scene active" id="s0">
   <div class="stars-bg" id="stars0"></div>
 
-  <!-- Church Identity Header -->
+  <!-- Church Identity Header - arc only -->
   <div class="church-header">
     <div class="church-arc-wrap">
       <svg viewBox="0 0 480 70" width="480" height="70" xmlns="http://www.w3.org/2000/svg">
@@ -252,8 +252,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
         </text>
       </svg>
     </div>
-    <div class="church-sub-text">Equipe Primícias</div>
     <div class="church-divider"></div>
+  </div>
+
+  <!-- Equipe Primícias -->
+  <div style="position:absolute;bottom:80px;left:0;right:0;text-align:center;pointer-events:none">
+    <div style="font-family:'Bebas Neue',cursive;font-size:24px;color:#FF9600;letter-spacing:6px;text-shadow:0 2px 12px rgba(0,0,0,.8)">Equipe Primícias</div>
   </div>
 
   <div class="rock-float">🪨</div>
@@ -466,7 +470,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 // ══ CONFIG — TROQUE PELA SUA URL DO GITHUB PAGES ══
-const GAME_URL = 'https://SEU-USUARIO.github.io/firmados-na-rocha';
+const GAME_URL = 'https://gmctrafficoficial-ship-it.github.io/firmados-na-rocha/';
 // ═════════════════════════════════════════════════
 let heroName = 'Amigo';
 let chosenBase = 'rock'; // rock or sand
