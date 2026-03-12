@@ -11,7 +11,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
 
 /* ── CHURCH HEADER ── */
 .church-header{position:absolute;top:0;left:0;right:0;display:flex;flex-direction:column;align-items:center;padding-top:10px;z-index:10;pointer-events:none}
-.church-arc-wrap{width:480px;height:70px;overflow:visible}
+.church-arc-wrap{width:600px;height:110px;overflow:visible}
 .church-sub-text{font-family:'Bebas Neue',cursive;font-size:24px;color:rgba(255,255,255,.88);letter-spacing:6px;margin-top:-4px;text-align:center;text-shadow:0 2px 8px rgba(0,0,0,.5)}
 .church-divider{width:200px;height:2px;background:linear-gradient(90deg,transparent,rgba(255,217,0,.6),transparent);margin-top:6px}
 
@@ -243,17 +243,57 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
   <!-- Church Identity Header - arc only -->
   <div class="church-header">
     <div class="church-arc-wrap">
-      <svg viewBox="0 0 480 70" width="480" height="70" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <path id="arc-path" d="M 20,65 A 220,220 0 0,1 460,65"/>
-        </defs>
-        <text font-family="Special Elite, serif" font-size="20" fill="#FFD900" letter-spacing="3" style="text-shadow:none">
-          <textPath href="#arc-path" startOffset="50%" text-anchor="middle">✦  IEQ – NOVO MUNDO  ✦</textPath>
-        </text>
-      </svg>
+      <canvas id="arc-canvas" width="600" height="110" style="display:block"></canvas>
     </div>
     <div class="church-divider"></div>
   </div>
+
+  <script>
+  (function(){
+    const canvas = document.getElementById('arc-canvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = 600, H = 110;
+    const text = 'IEQ – NOVO MUNDO';
+    const cx = W / 2, cy = 520, r = 430;
+    const totalSpan = Math.PI * 0.38;
+    const startAngle = -Math.PI / 2 - totalSpan / 2;
+
+    ctx.font = "bold 32px 'Fredoka One', cursive";
+    const chars = text.split('');
+    const angleStep = totalSpan / (chars.length - 1);
+
+    // Draw each character along arc
+    chars.forEach((ch, i) => {
+      const angle = startAngle + i * angleStep;
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle + Math.PI / 2);
+
+      // Shadow / 3D depth
+      ctx.fillStyle = '#b86e00';
+      ctx.fillText(ch, 2, 4);
+
+      // Outer stroke
+      ctx.strokeStyle = '#1a1a2e';
+      ctx.lineWidth = 5;
+      ctx.strokeText(ch, 0, 0);
+
+      // Main fill — golden gradient per char
+      const grad = ctx.createLinearGradient(0, -28, 0, 8);
+      grad.addColorStop(0, '#FFF176');
+      grad.addColorStop(0.4, '#FFD900');
+      grad.addColorStop(1, '#FF9600');
+      ctx.fillStyle = grad;
+      ctx.fillText(ch, 0, 0);
+
+      ctx.restore();
+    });
+  })();
+  </script>
 
   <!-- Equipe Primícias -->
   <div style="position:absolute;bottom:80px;left:0;right:0;text-align:center;pointer-events:none">
