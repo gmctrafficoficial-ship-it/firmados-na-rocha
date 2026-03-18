@@ -556,7 +556,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
     <div class="qr-title">Parabéns! Você foi INCRÍVEL hoje! 🌟</div>
     <div class="qr-sub">Peça pra seu pai ou mãe escanear o QR Code<br>e leve o jogo pra casa!</div>
     <div class="qr-box">
-      <canvas id="qr-canvas" width="200" height="200"></canvas>
+      <div id="qr-canvas" style="width:200px;height:200px"></div>
     </div>
     <div class="qr-url" id="qr-url-text">Carregando link...</div>
     <div class="qr-instruction">
@@ -632,19 +632,20 @@ function generateQR(){
   qrGenerated = true;
   const url = GAME_URL;
   document.getElementById('qr-url-text').textContent = url;
+  const container = document.getElementById('qr-canvas');
+  container.innerHTML = '';
   try {
-    new QRCode(document.getElementById('qr-canvas'), {
+    new QRCode(container, {
       text: url, width:200, height:200,
       colorDark:'#1a1a2e', colorLight:'#ffffff',
       correctLevel: QRCode.CorrectLevel.H
     });
   } catch(e) {
-    // fallback: use public QR API
-    const canvas = document.getElementById('qr-canvas');
+    // fallback: use public QR API image
     const img = document.createElement('img');
-    img.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&bgcolor=ffffff&color=1a1a2e`;
+    img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url) + '&bgcolor=ffffff&color=1a1a2e';
     img.width = 200; img.height = 200; img.style.borderRadius='8px';
-    canvas.parentNode.replaceChild(img, canvas);
+    container.appendChild(img);
   }
 }
 
@@ -900,12 +901,29 @@ function restartGame(){
   document.getElementById('s6-result').classList.remove('show');
   document.getElementById('rain6').style.opacity='0';
   document.getElementById('wind6').style.opacity='0';
-  document.getElementById('s7-choices').querySelectorAll('.reflect-btn').forEach(b=>{
+  // Reset reflect buttons — restore original text and state
+  const origTexts = [
+    '🪨 Uma pedra de verdade',
+    '💰 Dinheiro e sucesso',
+    '✝️ JESUS! A Palavra de Deus',
+    '📚 Ser muito inteligente'
+  ];
+  const origHTML = [
+    '<span class="mc-emoji"></span>🪨 Uma pedra<br>de verdade',
+    '<span class="mc-emoji"></span>💰 Dinheiro<br>e sucesso',
+    '<span class="mc-emoji"></span>✝️ JESUS!<br>A Palavra de Deus',
+    '<span class="mc-emoji"></span>📚 Ser muito<br>inteligente'
+  ];
+  document.getElementById('s7-choices').querySelectorAll('.reflect-btn').forEach((b,i)=>{
     b.disabled=false; b.style.opacity='1';
     b.classList.remove('correct','wrong');
+    b.innerHTML = origHTML[i] || b.innerHTML;
   });
-  document.getElementById('s7-q').textContent='Mas espera... o que é a PEDRA da história de Jesus?';
+  document.getElementById('s7-q').innerHTML='Mas espera... o que é a PEDRA<br>da história de Jesus?';
   document.getElementById('s7-hint').style.display='none';
+  // Reset QR container for regeneration
+  const qrEl = document.getElementById('qr-canvas');
+  qrEl.innerHTML = '';
   goTo('s0');
 }
 </script>
