@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Firmados na Rocha 🪨</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&family=Special+Elite&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&family=Special+Elite&family=Bebas+Neue&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:'Nunito',sans-serif}
@@ -255,10 +255,10 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
     const ctx = canvas.getContext('2d');
     const W = 900, H = 180;
     const text = 'IEQ – NOVO MUNDO';
-    const fontSize = 46;
+    const fontSize = 34;
     const cx = W / 2, cy = 1300, r = 1250;
 
-    ctx.font = "bold " + fontSize + "px 'Fredoka One', cursive";
+    ctx.font = fontSize + "px 'Press Start 2P', monospace";
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
@@ -266,7 +266,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
     const chars = text.split('');
     const widths = chars.map(ch => ctx.measureText(ch).width);
     const totalTextWidth = widths.reduce((a, b) => a + b, 0);
-    const spacing = 1.05; // breathing room multiplier
+    const spacing = 1.12; // breathing room multiplier
     const totalArcLength = totalTextWidth * spacing;
     const totalSpan = totalArcLength / r;
 
@@ -288,22 +288,19 @@ html,body{width:100%;height:100%;overflow:hidden;background:#1a1a2e;font-family:
       ctx.translate(x, y);
       ctx.rotate(angle + Math.PI / 2);
 
-      // Shadow / 3D depth
-      ctx.fillStyle = '#b86e00';
-      ctx.fillText(ch, 2, 3);
+      // Neon glow layers
+      ctx.shadowColor = '#FFD700';
+      ctx.shadowBlur = 20;
+      ctx.fillStyle = '#FFD700';
+      ctx.fillText(ch, 0, 0);
 
-      // Outer stroke
-      ctx.strokeStyle = '#0d1b2e';
-      ctx.lineWidth = 5;
-      ctx.strokeText(ch, 0, 0);
+      ctx.shadowBlur = 40;
+      ctx.shadowColor = '#FF8C00';
+      ctx.fillText(ch, 0, 0);
 
-      // Main fill — golden gradient per char
-      const grad = ctx.createLinearGradient(0, -fontSize * 0.6, 0, fontSize * 0.3);
-      grad.addColorStop(0, '#FFF8B0');
-      grad.addColorStop(0.35, '#FFD700');
-      grad.addColorStop(0.7, '#DAA520');
-      grad.addColorStop(1, '#B8860B');
-      ctx.fillStyle = grad;
+      // Crisp bright center
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#FFEF80';
       ctx.fillText(ch, 0, 0);
 
       ctx.restore();
